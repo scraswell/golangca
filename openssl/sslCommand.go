@@ -3,6 +3,7 @@ package openssl
 import (
 	"fmt"
 	"io"
+	"log"
 	"os/exec"
 )
 
@@ -20,7 +21,7 @@ func InvokeOpensslCommand(args ...string) (int, string, string) {
 		getOpensslPath(),
 		args...)
 
-	// log.Printf(fmt.Sprintf("Invoked: %s", sslCommand.String()))
+	log.Printf(fmt.Sprintf("Invoked: %s", sslCommand.String()))
 
 	outPipe, err := sslCommand.StdoutPipe()
 	if err != nil {

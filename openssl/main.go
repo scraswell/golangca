@@ -10,6 +10,24 @@ import (
 	"github.com/spf13/viper"
 )
 
+func UpdateRootCertificateDatabase(v *viper.Viper) {
+	c := getConfig(v)
+	if c == nil {
+		panic("Config was nil.")
+	}
+
+	updatedb(c, true)
+}
+
+func UpdateIntermediateCertificateDatabase(v *viper.Viper) {
+	c := getConfig(v)
+	if c == nil {
+		panic("Config was nil.")
+	}
+
+	updatedb(c, false)
+}
+
 func ShowRootCertificateDatabase(v *viper.Viper) {
 	c := getConfig(v)
 	if c == nil {

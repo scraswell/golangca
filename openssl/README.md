@@ -8,7 +8,7 @@ The 6 fields are:
 
 0) Entry type. May be "V" (valid), "R" (revoked) or "E" (expired).
 Note that an expired may have the type "V" because the type has
-not been updated. 'openssl ca updatedb' does such an update.
+not been updated. 'openssl ca -updatedb' does such an update.
 1) Expiration datetime.
 2) Revokation datetime. This is set for any entry of the type "R".
 3) Serial number.
