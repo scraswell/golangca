@@ -1,6 +1,9 @@
 package openssl
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+)
 
 const signingConfigIndex = 2
 const signingExtensionsIndex = 4
@@ -57,6 +60,7 @@ func genSigningCommandArgs(signingParams *SigningParams) []string {
 }
 
 func SignCertificate(signingParams *SigningParams) string {
+	log.Printf("Signing certificate request in: %s", signingParams.CsrInputPath)
 	exitCode, standardOutput, standardError := InvokeOpensslCommand(
 		genSigningCommandArgs(signingParams)...)
 

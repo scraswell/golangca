@@ -13,6 +13,7 @@ func main() {
 	configure()
 
 	openssl.Initialize(config)
+	openssl.ShowRootCertificateDatabase(config)
 }
 
 func configure() {

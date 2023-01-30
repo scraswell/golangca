@@ -10,6 +10,24 @@ import (
 	"github.com/spf13/viper"
 )
 
+func ShowRootCertificateDatabase(v *viper.Viper) {
+	c := getConfig(v)
+	if c == nil {
+		panic("Config was nil.")
+	}
+
+	log.Println(listCertificates(c, true))
+}
+
+func ShowIntermediateCertificateDatabase(v *viper.Viper) {
+	c := getConfig(v)
+	if c == nil {
+		panic("Config was nil.")
+	}
+
+	log.Println(listCertificates(c, false))
+}
+
 func Initialize(v *viper.Viper) {
 	c := getConfig(v)
 	if c == nil {
