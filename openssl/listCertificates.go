@@ -8,12 +8,6 @@ import (
 	"strconv"
 )
 
-const StatusField = 0
-const DateField = 1
-const SerialField = 3
-const FilePathField = 4
-const DistinguishedNameField = 5
-
 func getDbFilePath(c *Config, fromRootCa bool) string {
 	var dir string
 
