@@ -22,18 +22,18 @@ Handle sending commands to the `openssl` binary.
 - Implement revocation.
 - Implement scheduler for DB update such that expired certificates will be updated in the DB without user interaction.
 - REST API for the service
-- Dockerfile / Docker compose descriptor for deployment
-    - reverse proxy container (Caddy or nginx)?
 
 ## Endpoint authentication
 - undecided
 
 ## REST API endpoints
-`/v1/crl` - [GET] return the PEM encoded CRL
-`/v1/list` - [GET] return the list of certificates stored in the CA database
-`/v1/get` - [GET:jsonbody] return the PEM encoded certificate identified by a given serial number
-`/v1/revoke` - [PUT:jsonbody] revoke the certificate identified by a given serial number
-`/v1/sign` - [POST:jsonbody] sign the given PEM encoded CSR
+### Dockerfile / Docker compose descriptor for deployment
+Reverse proxy container (Caddy or nginx)?
+- `/v1/crl` - [GET] return the PEM encoded CRL
+- `/v1/list` - [GET] return the list of certificates stored in the CA database
+- `/v1/get` - [GET:jsonbody] return the PEM encoded certificate identified by a given serial number
+- `/v1/revoke` - [PUT:jsonbody] revoke the certificate identified by a given serial number
+- `/v1/sign` - [POST:jsonbody] sign the given PEM encoded CSR
 
 ## Testing
 - Tests around generating ssl command arguments (unit)
