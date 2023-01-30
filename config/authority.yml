@@ -1,0 +1,25 @@
+caKeyLength: 4096
+certKeyLength: 3072
+city: Moncton
+country: CA
+domain: at.home
+hashAlgorithm: sha256
+organization: "My Family"
+organizationalUnit: "Home"
+state: NB
+opensslConfigFile: openssl.conf
+
+rootAuthority:
+  dir: "/Users/sean/.ca/root"
+  name: My Family Root CA
+  contact: support@at.home
+  passphrase: helloworld1
+  daysValid: 36500
+
+intermediateAuthority:
+  dir: "/Users/sean/.ca/intermediate"
+  name: My Family Issuing CA
+  contact: support@at.home
+  passphrase: helloworld1
+  daysValid: 3650
+
