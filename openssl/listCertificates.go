@@ -53,7 +53,7 @@ func listCertificates(c *Config, fromRootCa bool) string {
 		certificate.Status = cert[StatusField]
 		certificate.Date = cert[DateField]
 		certificate.Serial, _ = strconv.Atoi(cert[SerialField])
-		certificate.FilePath = cert[FilePathField]
+		certificate.FilePath = fmt.Sprintf("./%s/%s.pem", IssuedDir, cert[SerialField])
 		certificate.DistinguishedName = cert[DistinguishedNameField]
 
 		certificates = append(certificates, certificate)
