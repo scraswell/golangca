@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../openssl"
+		},
+		{
+			"path": "../openssl_assets"
+		},
+		{
+			"path": "../authority"
+		}
+	],
+	"settings": {}
+}
