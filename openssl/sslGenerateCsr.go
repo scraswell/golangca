@@ -32,17 +32,18 @@ func genCsrArgs(csr *Csr, openSslConfigFile string, csrOutputPath string, passph
 	var args []string
 
 	for i, arg := range csrArgs {
-		if i == genCsrConfigIndex {
+		switch i {
+		case genCsrConfigIndex:
 			arg = fmt.Sprintf(arg, openSslConfigFile)
-		} else if i == genCsrPrivateKeyIndex {
+		case genCsrPrivateKeyIndex:
 			arg = fmt.Sprintf(arg, csr.PrivateKeyPath)
-		} else if i == genCsrHashAlgorithmIndex {
+		case genCsrHashAlgorithmIndex:
 			arg = fmt.Sprintf(arg, csr.HashAlgorithm)
-		} else if i == genCsrDnIndex {
+		case genCsrDnIndex:
 			arg = BuildDistinguishedNameFromCsr(csr)
-		} else if i == genCsrOutputIndex {
+		case genCsrOutputIndex:
 			arg = fmt.Sprintf(arg, csrOutputPath)
-		} else if i == genCsrPassphraseIndex {
+		case genCsrPassphraseIndex:
 			arg = fmt.Sprintf(arg, passphrase)
 		}
 

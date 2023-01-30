@@ -13,29 +13,30 @@ var updateDbArgs = [...]string{
 	"-config",
 	"%s",
 	"-passin",
-	"pass:%s",
+	"file:%s",
 	"-updatedb",
 }
 
 func genUpdateDbArgs(c *Config, isRootCa bool) []string {
 	var config string
-	var passphrase string
+	var passphraseFile string
 
 	if isRootCa {
 		config = getConfigPath(c.RootCaConfig.Directory, c.OpenSslConfigFile)
-		passphrase = c.RootCaConfig.Passphrase
+		passphraseFile = getPassphraseFilePath(c.RootCaConfig.Directory)
 	} else {
 		config = getConfigPath(c.IntermediateCaConfig.Directory, c.OpenSslConfigFile)
-		passphrase = c.IntermediateCaConfig.Passphrase
+		passphraseFile = getPassphraseFilePath(c.IntermediateCaConfig.Directory)
 	}
 
 	var args []string
 
 	for i, arg := range updateDbArgs {
-		if i == updateDbConfigIndex {
+		switch i {
+		case updateDbConfigIndex:
 			arg = fmt.Sprintf(arg, config)
-		} else if i == updateDbPassphraseIndex {
-			arg = fmt.Sprintf(arg, passphrase)
+		case updateDbPassphraseIndex:
+			arg = fmt.Sprintf(arg, passphraseFile)
 		}
 
 		args = append(args, arg)

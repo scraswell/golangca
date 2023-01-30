@@ -13,8 +13,8 @@ func main() {
 	configure()
 
 	openssl.Initialize(config)
-	// openssl.ShowRootCertificateDatabase(config)
-	// openssl.UpdateRootCertificateDatabase(config)
+	openssl.ShowRootCertificateDatabase(config)
+	openssl.UpdateRootCertificateDatabase(config)
 }
 
 func configure() {
@@ -28,6 +28,6 @@ func configure() {
 
 	err := config.ReadInConfig()
 	if err != nil {
-		panic(fmt.Errorf("Fatal error while reading config: %w", err))
+		panic(fmt.Errorf("fatal error while reading config: %w", err))
 	}
 }

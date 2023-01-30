@@ -13,13 +13,10 @@ rootAuthority:
   dir: "/Users/sean/.ca/root"
   name: My Family Root CA
   contact: support@at.home
-  passphrase: helloworld1
   daysValid: 36500
 
 intermediateAuthority:
   dir: "/Users/sean/.ca/intermediate"
   name: My Family Issuing CA
   contact: support@at.home
-  passphrase: helloworld1
   daysValid: 3650
-

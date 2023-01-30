@@ -30,27 +30,28 @@ var rootCertArgs = [...]string{
 	"-out",
 	"%s",
 	"-passin",
-	"pass:%s",
+	"file:%s",
 }
 
 func genRootCaCertificateArgs(c *Config) []string {
 	var args []string
 
 	for i, arg := range rootCertArgs {
-		if i == genRootCaConfigIndex {
+		switch i {
+		case genRootCaConfigIndex:
 			arg = fmt.Sprintf(arg, getConfigPath(c.RootCaConfig.Directory, c.OpenSslConfigFile))
-		} else if i == genRootCaKeyIndex {
+		case genRootCaKeyIndex:
 			arg = fmt.Sprintf(arg, getPrivateKeyPath(c.RootCaConfig.Directory))
-		} else if i == genRootCaValidityDaysIndex {
+		case genRootCaValidityDaysIndex:
 			arg = fmt.Sprintf(arg, c.RootCaConfig.DaysValid)
-		} else if i == genRootCaValidityHashAlg {
+		case genRootCaValidityHashAlg:
 			arg = fmt.Sprintf(arg, c.HashAlgorithm)
-		} else if i == genRootCaDnIndex {
+		case genRootCaDnIndex:
 			arg = BuildDistinguishedName(c, true)
-		} else if i == genRootCaOutputFileIndex {
+		case genRootCaOutputFileIndex:
 			arg = fmt.Sprintf(arg, getCaCertificatePath(c.RootCaConfig.Directory))
-		} else if i == genRootCaPassphraseIndex {
-			arg = fmt.Sprintf(arg, c.RootCaConfig.Passphrase)
+		case genRootCaPassphraseIndex:
+			arg = fmt.Sprintf(arg, getPassphraseFilePath(c.RootCaConfig.Directory))
 		}
 
 		args = append(args, arg)

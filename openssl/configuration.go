@@ -16,7 +16,7 @@ func getConfig(v *viper.Viper) *Config {
 
 		err := v.Unmarshal(conf)
 		if err != nil {
-			panic(fmt.Errorf("Unable to decode config.  %w", err))
+			panic(fmt.Errorf("unable to decode config.  %w", err))
 		}
 	}
 
@@ -24,11 +24,10 @@ func getConfig(v *viper.Viper) *Config {
 }
 
 type CertficateAuthority struct {
-	Directory  string `mapstructure:"dir"`
-	Name       string `mapstructure:"name"`
-	Contact    string `mapstructure:"contact"`
-	Passphrase string `mapstructure:"passphrase"`
-	DaysValid  int    `mapstructure:"daysValid"`
+	Directory string `mapstructure:"dir"`
+	Name      string `mapstructure:"name"`
+	Contact   string `mapstructure:"contact"`
+	DaysValid int    `mapstructure:"daysValid"`
 }
 
 type Config struct {

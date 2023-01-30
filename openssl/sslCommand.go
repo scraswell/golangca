@@ -3,7 +3,6 @@ package openssl
 import (
 	"fmt"
 	"io"
-	"log"
 	"os/exec"
 )
 
@@ -21,36 +20,36 @@ func InvokeOpensslCommand(args ...string) (int, string, string) {
 		getOpensslPath(),
 		args...)
 
-	log.Printf(fmt.Sprintf("Invoked: %s", sslCommand.String()))
+	// log.Printf("invoked: %s", sslCommand.String())
 
 	outPipe, err := sslCommand.StdoutPipe()
 	if err != nil {
-		panic(fmt.Errorf("Unable to open stdout pipe: %w", err))
+		panic(fmt.Errorf("unable to open stdout pipe: %w", err))
 	}
 
 	errPipe, err := sslCommand.StderrPipe()
 	if err != nil {
-		panic(fmt.Errorf("Unable to open stderr pipe: %w", err))
+		panic(fmt.Errorf("unable to open stderr pipe: %w", err))
 	}
 
 	if err := sslCommand.Start(); err != nil {
-		panic(fmt.Errorf("Command invocation failed: %w", err))
+		panic(fmt.Errorf("command invocation failed: %w", err))
 	}
 
 	slurpOut, err := io.ReadAll(outPipe)
 	if err != nil {
-		panic(fmt.Errorf("Unable read stdout: %w", err))
+		panic(fmt.Errorf("unable read stdout: %w", err))
 	}
 
 	slurpErr, err := io.ReadAll(errPipe)
 	if err != nil {
-		panic(fmt.Errorf("Unable read stderr: %w", err))
+		panic(fmt.Errorf("unable read stderr: %w", err))
 	}
 
 	sslCommand.Wait()
 
-	standardOutput := fmt.Sprintf("%s", slurpOut)
-	standardError := fmt.Sprintf("%s", slurpErr)
+	standardOutput := string(slurpOut)
+	standardError := string(slurpErr)
 	exitCode := sslCommand.ProcessState.ExitCode()
 
 	return exitCode, standardOutput, standardError

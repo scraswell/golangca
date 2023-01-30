@@ -26,7 +26,7 @@ func listCertificates(c *Config, fromRootCa bool) string {
 	db, err := os.Open(dbFilePath)
 
 	if err != nil {
-		panic(fmt.Errorf("Unable to open certificate database: %w", err))
+		panic(fmt.Errorf("unable to open certificate database: %w", err))
 	}
 
 	defer db.Close()
@@ -37,7 +37,7 @@ func listCertificates(c *Config, fromRootCa bool) string {
 
 	certificateData, err := reader.ReadAll()
 	if err != nil {
-		panic(fmt.Errorf("Unable to read database: %w", err))
+		panic(fmt.Errorf("unable to read database: %w", err))
 	}
 
 	var certificate Certificate
@@ -55,7 +55,7 @@ func listCertificates(c *Config, fromRootCa bool) string {
 
 	certsJson, err := json.Marshal(certificates)
 	if err != nil {
-		panic(fmt.Errorf("Unable to marshall certificates: %w", err))
+		panic(fmt.Errorf("unable to marshall certificates: %w", err))
 	}
 
 	return string(certsJson)

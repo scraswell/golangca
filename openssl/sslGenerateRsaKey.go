@@ -22,11 +22,12 @@ func getGenEncryptedRsaKeyArgs(passphrase string, keyfilePath string, bitlength 
 	var args []string
 
 	for i, arg := range encryptedRsaKeyArgs {
-		if i == genRsaKeyPassphraseIndex {
+		switch i {
+		case genRsaKeyPassphraseIndex:
 			arg = fmt.Sprintf(arg, passphrase)
-		} else if i == genRsaKeyOutputFileIndex {
+		case genRsaKeyOutputFileIndex:
 			arg = fmt.Sprintf(arg, keyfilePath)
-		} else if i == genRsaKeyBitLengthIndex {
+		case genRsaKeyBitLengthIndex:
 			arg = fmt.Sprintf(arg, bitlength)
 		}
 
@@ -39,6 +40,8 @@ func getGenEncryptedRsaKeyArgs(passphrase string, keyfilePath string, bitlength 
 func GenerateEncryptedRsaKey(passphrase string, keyfilePath string, bitlength int) {
 	exitCode, standardOutput, standardError := InvokeOpensslCommand(
 		getGenEncryptedRsaKeyArgs(passphrase, keyfilePath, bitlength)...)
+
+	protectFile(keyfilePath)
 
 	if exitCode != 0 {
 		panic(fmt.Sprintf(

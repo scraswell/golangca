@@ -25,7 +25,7 @@ var certificateSigningArgs = [...]string{
 	"-md",
 	"%s",
 	"-passin",
-	"pass:%s",
+	"file:%s",
 	"-batch",
 	"-in",
 	"%s",
@@ -37,19 +37,20 @@ func genSigningCommandArgs(signingParams *SigningParams) []string {
 	var args []string
 
 	for i, arg := range certificateSigningArgs {
-		if i == signingConfigIndex {
+		switch i {
+		case signingConfigIndex:
 			arg = fmt.Sprintf(arg, signingParams.OpensslConfig)
-		} else if i == signingExtensionsIndex {
+		case signingExtensionsIndex:
 			arg = fmt.Sprintf(arg, signingParams.Policy)
-		} else if i == signingDaysValid {
+		case signingDaysValid:
 			arg = fmt.Sprintf(arg, signingParams.DaysValid)
-		} else if i == signingHashAlgorithmIndex {
+		case signingHashAlgorithmIndex:
 			arg = fmt.Sprintf(arg, signingParams.HashAlgorithm)
-		} else if i == signingPassphraseIndex {
+		case signingPassphraseIndex:
 			arg = fmt.Sprintf(arg, signingParams.Passphrase)
-		} else if i == signingRequestIndex {
+		case signingRequestIndex:
 			arg = fmt.Sprintf(arg, signingParams.CsrInputPath)
-		} else if i == signingOutputIndex {
+		case signingOutputIndex:
 			arg = fmt.Sprintf(arg, signingParams.CertificateOutputPath)
 		}
 

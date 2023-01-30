@@ -11,11 +11,13 @@ const CrlNumberFile string = "crlnumber"
 const CrlUrl string = "https://authority.%s/%s"
 const CsrDir string = "csr"
 const DbFileName string = "index.txt"
-const IntCaConfig string = "/int_ca-openssl.conf.j2"
 const IntCaCert string = "int_ca.cert.pem"
+const IntCaConfig string = "/int_ca-openssl.conf.j2"
 const IntCaCsr string = "int_ca.csr"
 const IntermediateCrlFile string = "int_ca.crl"
 const IssuedDir string = "issued"
+const PassphraseFile string = "passphrase"
+const PassphraseLengthBytes = 128
 const PfxDir string = "pfx"
 const PrivateDir string = "private"
 const RootCaConfig string = "/root_ca-openssl.conf.j2"
@@ -38,6 +40,10 @@ func getConfigPath(caRoot string, configFileName string) string {
 
 func getPrivateKeyPath(caRoot string) string {
 	return fmt.Sprintf("%s/%s/%s", caRoot, PrivateDir, CaKeyFile)
+}
+
+func getPassphraseFilePath(caRoot string) string {
+	return fmt.Sprintf("%s/%s/%s", caRoot, PrivateDir, PassphraseFile)
 }
 
 func getCaCertificatePath(caRoot string) string {
