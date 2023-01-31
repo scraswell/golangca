@@ -13,13 +13,14 @@ Handle sending commands to the `openssl` binary.
 
 - Listing certificates recorded in the CA database.
 - Updating the CA database
+- Randomize the passphrase and place it in a permissions protected file to reside in the container filesystem.
+- Implement revocation.
+- Implement CRL generation
 
 ## Outstanding
-- Randomize the passphrase and place it in a permissions protected file to reside in the container filesystem.
 - Move generate key and generate CSR to a common library for use in CLI applications.
     - CLI will facilitate generating keys and CSRs to submit to the CA for signing.
-- Implement CRL generation and a method to expose obtaining the CRL.
-- Implement revocation.
+- A method to obtain the CRL.
 - Implement scheduler for DB update such that expired certificates will be updated in the DB without user interaction.
 - REST API for the service
 
