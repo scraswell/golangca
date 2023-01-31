@@ -36,6 +36,10 @@ var AuthorityDirs = [...]string{
 	IssuedDir,
 }
 
+func getIssuedCertsDir(caRoot string) string {
+	return fmt.Sprintf("%s/%s", caRoot, IssuedDir)
+}
+
 func getCrlNumberPath(caRoot string) string {
 	return fmt.Sprintf("%s/%s", caRoot, CrlNumberFile)
 }

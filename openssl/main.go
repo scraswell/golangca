@@ -10,6 +10,14 @@ func init() {
 	assertAvailablePRNG()
 }
 
+func RevokeRootCaCertificate(v *viper.Viper, certificateSerialNumber string) {
+	revokeCertificate(readConfig(v), true, certificateSerialNumber)
+}
+
+func RevokeIntermediateCaCertificate(v *viper.Viper, certificateSerialNumber string) {
+	revokeCertificate(readConfig(v), false, certificateSerialNumber)
+}
+
 func GenerateRootCaCrl(v *viper.Viper) {
 	generateCrl(readConfig(v), true)
 }
