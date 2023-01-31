@@ -36,6 +36,14 @@ var AuthorityDirs = [...]string{
 	IssuedDir,
 }
 
+func getCaDir(c *Config, isRoot bool) string {
+	if isRoot {
+		return c.RootCaConfig.Directory
+	} else {
+		return c.IntermediateCaConfig.Directory
+	}
+}
+
 func getIssuedCertsDir(caRoot string) string {
 	return fmt.Sprintf("%s/%s", caRoot, IssuedDir)
 }

@@ -76,6 +76,8 @@ func Initialize(v *viper.Viper) {
 			getPassphrase(c, isRootCa),
 			getPrivateKeyPath(dir),
 			c.DefaultCAKeyLength)
+
+		TestKeyPassphrase(c, isRootCa)
 	}
 
 	GenerateRootCACertificate(c)
