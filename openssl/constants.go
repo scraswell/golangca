@@ -44,10 +44,6 @@ func getCrlNumberPath(caRoot string) string {
 	return fmt.Sprintf("%s/%s", caRoot, CrlNumberFile)
 }
 
-func getCrlOutputPath(caRoot string) string {
-	return fmt.Sprintf("%s/%s/%s", caRoot, CrlDir, CrlFile)
-}
-
 func getConfigPath(caRoot string) string {
 	return fmt.Sprintf("%s/%s", caRoot, OpenSslConfigFileName)
 }

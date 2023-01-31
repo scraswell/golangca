@@ -1,13 +1,19 @@
 package openssl
 
 import (
-	"log"
-
 	"github.com/spf13/viper"
 )
 
 func init() {
 	assertAvailablePRNG()
+}
+
+func GetCrlForRootCa(v *viper.Viper) string {
+	return getCrl(readConfig(v), true)
+}
+
+func GetCrlForIntermediateCa(v *viper.Viper) string {
+	return getCrl(readConfig(v), false)
 }
 
 func RevokeRootCaCertificate(v *viper.Viper, certificateSerialNumber string) {
@@ -34,12 +40,12 @@ func UpdateIntermediateCertificateDatabase(v *viper.Viper) {
 	updatedb(readConfig(v), false)
 }
 
-func ShowRootCertificateDatabase(v *viper.Viper) {
-	log.Println(listCertificates(readConfig(v), true))
+func ShowRootCertificateDatabase(v *viper.Viper) string {
+	return listCertificates(readConfig(v), true)
 }
 
-func ShowIntermediateCertificateDatabase(v *viper.Viper) {
-	log.Println(listCertificates(readConfig(v), false))
+func ShowIntermediateCertificateDatabase(v *viper.Viper) string {
+	return listCertificates(readConfig(v), false)
 }
 
 func Initialize(v *viper.Viper) {

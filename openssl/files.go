@@ -36,12 +36,18 @@ func getPassphrase(c *Config, isRoot bool) string {
 		passphraseFilePath = getPassphraseFilePath(c.IntermediateCaConfig.Directory)
 	}
 
-	fileBytes, err := os.ReadFile(passphraseFilePath)
-	if err != nil {
-		panic(fmt.Errorf("unable to read passphrase file: %w", err))
+	return readStringFromFile(passphraseFilePath)
+}
+
+func getCrl(c *Config, isRoot bool) string {
+	var crlFilePath string
+	if isRoot {
+		crlFilePath = getCrlPath(c.RootCaConfig.Directory)
+	} else {
+		crlFilePath = getCrlPath(c.IntermediateCaConfig.Directory)
 	}
 
-	return string(fileBytes)
+	return readStringFromFile(crlFilePath)
 }
 
 func generateCrlNumberFile(c *Config, isRoot bool) {
@@ -106,6 +112,15 @@ func intializeSerialNumber(path string) {
 	protectFile(serialFilePath)
 
 	log.Printf("Created CA serial number file: %s", serialFilePath)
+}
+
+func readStringFromFile(filePath string) string {
+	fileBytes, err := os.ReadFile(filePath)
+	if err != nil {
+		panic(fmt.Errorf("unable to read file: %w", err))
+	}
+
+	return string(fileBytes)
 }
 
 func createEmptyDatabase(path string) {

@@ -35,7 +35,7 @@ func genCrlArgs(c *Config, isRoot bool) []string {
 		case genCrlConfigIndex:
 			arg = fmt.Sprintf(arg, getConfigPath(cadir))
 		case genCrlOutputPathIndex:
-			arg = fmt.Sprintf(arg, getCrlOutputPath(cadir))
+			arg = fmt.Sprintf(arg, getCrlPath(cadir))
 		case genCrlPassphraseIndex:
 			arg = fmt.Sprintf(arg, getPassphraseFilePath(cadir))
 		}

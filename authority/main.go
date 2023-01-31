@@ -13,14 +13,6 @@ func main() {
 	configure()
 
 	openssl.Initialize(config)
-	openssl.ShowRootCertificateDatabase(config)
-	openssl.UpdateRootCertificateDatabase(config)
-	openssl.GenerateRootCaCrl(config)
-	openssl.RevokeRootCaCertificate(config, "1000")
-	openssl.GenerateRootCaCrl(config)
-	openssl.UpdateRootCertificateDatabase(config)
-	openssl.ShowRootCertificateDatabase(config)
-
 }
 
 func configure() {
