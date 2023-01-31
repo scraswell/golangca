@@ -10,7 +10,6 @@ Handle sending commands to the `openssl` binary.
     - Creates a CSR for the subordinate CA.
     - Signs and records the subordinate CA CSR.
         - TODO: need to copy the signed certificate to the issuers certificate directory...
-
 - Listing certificates recorded in the CA database.
 - Updating the CA database
 - Randomize the passphrase and place it in a permissions protected file to reside in the container filesystem.
