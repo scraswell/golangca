@@ -22,6 +22,7 @@ Handle sending commands to the `openssl` binary.
 - A method to obtain the CRL.
 - Implement scheduler for DB update such that expired certificates will be updated in the DB without user interaction.
 - REST API for the service
+- When signing the certificate, produce, for-download a working certificate chain.
 
 ## Endpoint authentication
 - undecided
