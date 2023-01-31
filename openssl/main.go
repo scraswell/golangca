@@ -10,47 +10,32 @@ func init() {
 	assertAvailablePRNG()
 }
 
-func UpdateRootCertificateDatabase(v *viper.Viper) {
-	c := getConfig(v)
-	if c == nil {
-		panic("Config was nil.")
-	}
+func GenerateRootCaCrl(v *viper.Viper) {
+	generateCrl(readConfig(v), true)
+}
 
-	updatedb(c, true)
+func GenerateIntermediateCaCrl(v *viper.Viper) {
+	generateCrl(readConfig(v), false)
+}
+
+func UpdateRootCertificateDatabase(v *viper.Viper) {
+	updatedb(readConfig(v), true)
 }
 
 func UpdateIntermediateCertificateDatabase(v *viper.Viper) {
-	c := getConfig(v)
-	if c == nil {
-		panic("Config was nil.")
-	}
-
-	updatedb(c, false)
+	updatedb(readConfig(v), false)
 }
 
 func ShowRootCertificateDatabase(v *viper.Viper) {
-	c := getConfig(v)
-	if c == nil {
-		panic("Config was nil.")
-	}
-
-	log.Println(listCertificates(c, true))
+	log.Println(listCertificates(readConfig(v), true))
 }
 
 func ShowIntermediateCertificateDatabase(v *viper.Viper) {
-	c := getConfig(v)
-	if c == nil {
-		panic("Config was nil.")
-	}
-
-	log.Println(listCertificates(c, false))
+	log.Println(listCertificates(readConfig(v), false))
 }
 
 func Initialize(v *viper.Viper) {
-	c := getConfig(v)
-	if c == nil {
-		panic("Config was nil.")
-	}
+	c := readConfig(v)
 
 	var caDir = [...]string{
 		c.RootCaConfig.Directory,
@@ -70,6 +55,7 @@ func Initialize(v *viper.Viper) {
 		generatePassphraseFile(c, isRootCa)
 		createEmptyDatabase(dir)
 		intializeSerialNumber(dir)
+		generateCrlNumberFile(c, isRootCa)
 		writeOutConfig(c, isRootCa)
 
 		GenerateEncryptedRsaKey(
@@ -81,7 +67,7 @@ func Initialize(v *viper.Viper) {
 	GenerateRootCACertificate(c)
 	GenerateIntermediateCaCsr(c)
 	SignCertificate(&SigningParams{
-		OpensslConfig:         getConfigPath(c.RootCaConfig.Directory, c.OpenSslConfigFile),
+		OpensslConfig:         getConfigPath(c.RootCaConfig.Directory),
 		Policy:                IntermediateCAPolicy,
 		DaysValid:             c.IntermediateCaConfig.DaysValid,
 		HashAlgorithm:         c.HashAlgorithm,
@@ -102,7 +88,16 @@ func GenerateIntermediateCaCsr(c *Config) {
 		c.IntermediateCaConfig.Contact,
 		c.HashAlgorithm,
 		getPrivateKeyPath(c.IntermediateCaConfig.Directory),
-		getConfigPath(c.IntermediateCaConfig.Directory, c.OpenSslConfigFile),
+		getConfigPath(c.IntermediateCaConfig.Directory),
 		(getCsrPath(c.RootCaConfig.Directory) + "/" + IntCaCsr),
 		getPassphrase(c, false))
+}
+
+func readConfig(v *viper.Viper) *Config {
+	c := getConfig(v)
+	if c == nil {
+		panic("Config was nil.")
+	}
+
+	return c
 }

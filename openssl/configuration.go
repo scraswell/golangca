@@ -40,7 +40,6 @@ type Config struct {
 	Org                  string              `mapstructure:"organization"`
 	OrgUnit              string              `mapstructure:"organizationalUnit"`
 	Domain               string              `mapstructure:"domain"`
-	OpenSslConfigFile    string              `mapstructure:"opensslConfigFile"`
 	RootCaConfig         CertficateAuthority `mapstructure:"rootAuthority"`
 	IntermediateCaConfig CertficateAuthority `mapstructure:"intermediateAuthority"`
 }

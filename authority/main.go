@@ -15,6 +15,7 @@ func main() {
 	openssl.Initialize(config)
 	openssl.ShowRootCertificateDatabase(config)
 	openssl.UpdateRootCertificateDatabase(config)
+	openssl.GenerateRootCaCrl(config)
 }
 
 func configure() {

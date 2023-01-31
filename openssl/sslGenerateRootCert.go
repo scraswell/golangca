@@ -39,7 +39,7 @@ func genRootCaCertificateArgs(c *Config) []string {
 	for i, arg := range rootCertArgs {
 		switch i {
 		case genRootCaConfigIndex:
-			arg = fmt.Sprintf(arg, getConfigPath(c.RootCaConfig.Directory, c.OpenSslConfigFile))
+			arg = fmt.Sprintf(arg, getConfigPath(c.RootCaConfig.Directory))
 		case genRootCaKeyIndex:
 			arg = fmt.Sprintf(arg, getPrivateKeyPath(c.RootCaConfig.Directory))
 		case genRootCaValidityDaysIndex:

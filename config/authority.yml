@@ -7,7 +7,6 @@ hashAlgorithm: sha256
 organization: "My Family"
 organizationalUnit: "Home"
 state: NB
-opensslConfigFile: openssl.conf
 
 rootAuthority:
   dir: "/Users/sean/.ca/root"

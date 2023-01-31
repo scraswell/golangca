@@ -44,9 +44,24 @@ func getPassphrase(c *Config, isRoot bool) string {
 	return string(fileBytes)
 }
 
+func generateCrlNumberFile(c *Config, isRoot bool) {
+	var cadir string
+	if isRoot {
+		cadir = c.RootCaConfig.Directory
+	} else {
+		cadir = c.IntermediateCaConfig.Directory
+	}
+
+	CrlNumberFilePath := getCrlNumberPath(cadir)
+	crlNumberFile := createFileWithContent(CrlNumberFilePath, StartingCrlNumber)
+	crlNumberFile.Close()
+	protectFile(CrlNumberFilePath)
+}
+
 func writeOutConfig(c *Config, isRoot bool) {
 	var configFileTemplate string
 	var directory string
+
 	if isRoot {
 		configFileTemplate = RootCaConfig
 		directory = c.RootCaConfig.Directory
@@ -72,13 +87,11 @@ func writeOutConfig(c *Config, isRoot bool) {
 	configReplacementMap["{{ int_ca.crl }}"] = getCrlUrl(c.Domain, isRoot)
 
 	for key, value := range configReplacementMap {
-		data = strings.Replace(data, key, value, -1)
+		data = strings.ReplaceAll(data, key, value)
 	}
 
-	configFilePath := getConfigPath(directory, c.OpenSslConfigFile)
-	configFile := createFile(configFilePath)
-
-	configFile.WriteString(data)
+	configFilePath := getConfigPath(directory)
+	configFile := createFileWithContent(configFilePath, data)
 	configFile.Close()
 	protectFile(configFilePath)
 
@@ -88,8 +101,7 @@ func writeOutConfig(c *Config, isRoot bool) {
 func intializeSerialNumber(path string) {
 	serialFilePath := fmt.Sprintf("%s/%s", path, SerialNumberFile)
 
-	serialFile := createFile(serialFilePath)
-	serialFile.WriteString(StartingSerialNumber)
+	serialFile := createFileWithContent(serialFilePath, StartingSerialNumber)
 	serialFile.Close()
 	protectFile(serialFilePath)
 
@@ -123,6 +135,17 @@ func createFile(filePath string) *os.File {
 	file, err := os.Create(filePath)
 	if err != nil {
 		panic(fmt.Errorf("error creating file (%s): %w", filePath, err))
+	}
+
+	return file
+}
+
+func createFileWithContent(filePath string, content string) *os.File {
+	file := createFile(filePath)
+
+	_, err := file.WriteString(content)
+	if err != nil {
+		panic(fmt.Errorf("unable to write content to file (%s): %w", filePath, err))
 	}
 
 	return file

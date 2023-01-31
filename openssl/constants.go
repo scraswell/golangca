@@ -6,7 +6,7 @@ const CaCertFile string = "ca.cert.pem"
 const CaKeyFile string = "ca.key.pem"
 const CertsDir string = "certs"
 const CrlDir string = "crl"
-const CrlFile string = "int_ca.crl"
+const CrlFile string = "ca.crl"
 const CrlNumberFile string = "crlnumber"
 const CrlUrl string = "https://authority.%s/%s"
 const CsrDir string = "csr"
@@ -14,15 +14,17 @@ const DbFileName string = "index.txt"
 const IntCaCert string = "int_ca.cert.pem"
 const IntCaConfig string = "/int_ca-openssl.conf.j2"
 const IntCaCsr string = "int_ca.csr"
-const IntermediateCrlFile string = "int_ca.crl"
 const IssuedDir string = "issued"
+const OpenSslConfigFileName string = "openssl.conf"
 const PassphraseFile string = "passphrase"
 const PassphraseLengthBytes = 128
 const PfxDir string = "pfx"
 const PrivateDir string = "private"
+const PublishedIntermediateCrlFileName string = "int_ca.crl"
+const PublishedRootCrlFileName string = "ca.crl"
 const RootCaConfig string = "/root_ca-openssl.conf.j2"
-const RootCrlFile string = "ca.crl"
 const SerialNumberFile string = "serial"
+const StartingCrlNumber string = "1000"
 const StartingSerialNumber string = "1000"
 
 var AuthorityDirs = [...]string{
@@ -34,8 +36,16 @@ var AuthorityDirs = [...]string{
 	IssuedDir,
 }
 
-func getConfigPath(caRoot string, configFileName string) string {
-	return fmt.Sprintf("%s/%s", caRoot, configFileName)
+func getCrlNumberPath(caRoot string) string {
+	return fmt.Sprintf("%s/%s", caRoot, CrlNumberFile)
+}
+
+func getCrlOutputPath(caRoot string) string {
+	return fmt.Sprintf("%s/%s/%s", caRoot, CrlDir, CrlFile)
+}
+
+func getConfigPath(caRoot string) string {
+	return fmt.Sprintf("%s/%s", caRoot, OpenSslConfigFileName)
 }
 
 func getPrivateKeyPath(caRoot string) string {
@@ -66,9 +76,9 @@ func getCrlUrl(domain string, isRoot bool) string {
 	var crlFile string
 
 	if isRoot {
-		crlFile = RootCrlFile
+		crlFile = PublishedRootCrlFileName
 	} else {
-		crlFile = IntermediateCrlFile
+		crlFile = PublishedIntermediateCrlFileName
 	}
 
 	return fmt.Sprintf(CrlUrl, domain, crlFile)
