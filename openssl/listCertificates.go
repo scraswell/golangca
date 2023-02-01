@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+
+	openssl "github.com/scraswell/golangca/openssl/common"
 )
 
 func getDbFilePath(c *Config, fromRootCa bool) string {
@@ -40,15 +42,15 @@ func listCertificates(c *Config, fromRootCa bool) string {
 		panic(fmt.Errorf("unable to read database: %w", err))
 	}
 
-	var certificate Certificate
-	var certificates []Certificate
+	var certificate openssl.Certificate
+	var certificates []openssl.Certificate
 
 	for _, cert := range certificateData {
-		certificate.Status = cert[StatusField]
-		certificate.Date = cert[DateField]
-		certificate.Serial, _ = strconv.Atoi(cert[SerialField])
-		certificate.FilePath = fmt.Sprintf("./%s/%s.pem", IssuedDir, cert[SerialField])
-		certificate.DistinguishedName = cert[DistinguishedNameField]
+		certificate.Status = cert[openssl.StatusField]
+		certificate.Date = cert[openssl.DateField]
+		certificate.Serial, _ = strconv.Atoi(cert[openssl.SerialField])
+		certificate.FilePath = fmt.Sprintf("./%s/%s.pem", IssuedDir, cert[openssl.SerialField])
+		certificate.DistinguishedName = cert[openssl.DistinguishedNameField]
 
 		certificates = append(certificates, certificate)
 	}

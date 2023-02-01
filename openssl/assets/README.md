@@ -1,5 +1,7 @@
-# Resources
+# OpenSSL Resources
 ## https://github.com/omeid/go-resources
+Creates embedded resources.
+
 ### From the root of the repository
 ```
 pushd openssl/assets

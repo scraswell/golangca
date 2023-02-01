@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/scraswell/golangca/openssl/assets v0.0.0-20230127204517-e47763b0ea97
+	github.com/scraswell/golangca/openssl/common v0.0.0-20230127204517-e47763b0ea97
 	github.com/spf13/viper v1.15.0
 )
 

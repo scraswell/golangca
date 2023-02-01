@@ -3,7 +3,6 @@ module github.com/scraswell/golangca/authority
 go 1.19
 
 require (
-	github.com/scraswell/golangca/openssl v0.0.0-20230127165423-6ada0b36e1b3
 	github.com/spf13/viper v1.15.0
 )
 
