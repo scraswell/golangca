@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/scraswell/golangca/openssl_assets"
+	openssl_assets "github.com/scraswell/golangca/openssl/assets"
 )
 
 func generatePassphraseFile(c *Config, isRoot bool) {

@@ -1,5 +1,5 @@
 # Notes
-- Remote repository must exist prior to setting up a workspace.
+- Remote repository must exist prior to setting up a workspace. ?? maybe?
 
 # Workspace init
 ```
