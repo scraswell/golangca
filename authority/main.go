@@ -1,4 +1,4 @@
-package main
+package authority
 
 import (
 	"fmt"
@@ -8,10 +8,13 @@ import (
 
 var config = viper.New()
 
-func main() {
+func init() {
 	configure()
-
 	openssl.Initialize(config)
+}
+
+func GetConfig() *viper.Viper {
+	return config
 }
 
 func configure() {
