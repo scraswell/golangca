@@ -2,7 +2,7 @@
 ## Purpose
 Handle sending commands to the `openssl` binary.
 
-## Current Functionality
+## Current Functionality (Done)
 - Initialize a new CA.
     - Creates the directory structure required to service the provided configuration files for the root CA and subordinate (signing) CA.
     - Generates 4096-bit private keys for the root and subordinate CA.
@@ -15,11 +15,13 @@ Handle sending commands to the `openssl` binary.
 - Randomize the passphrase and place it in a permissions protected file to reside in the container filesystem.
 - Implement revocation.
 - Implement CRL generation
+- Moved generate key and generate CSR to a common library for use in CLI applications.
+  - CLI will facilitate generating keys and CSRs to submit to the CA for signing.
+- A method to obtain the CRL.
 
 ## Outstanding
-- Move generate key and generate CSR to a common library for use in CLI applications.
-    - CLI will facilitate generating keys and CSRs to submit to the CA for signing.
-- A method to obtain the CRL.
+- implement the web API for the SSL CA
+- implement a CLI for generating keys, CSRs and submitting requests to the online CA
 - Implement scheduler for DB update such that expired certificates will be updated in the DB without user interaction.
 - REST API for the service
 - When signing the certificate, produce, for-download a working certificate chain.
