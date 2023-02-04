@@ -22,6 +22,10 @@ func getDbFilePath(c *Config, fromRootCa bool) string {
 	return fmt.Sprintf("%s/%s", dir, DbFileName)
 }
 
+func getRootCertificate(c *Config) string {
+	return readStringFromFile(getCaCertificatePath(c.RootCaConfig.Directory))
+}
+
 func listCertificates(c *Config, fromRootCa bool) string {
 	dbFilePath := getDbFilePath(c, fromRootCa)
 

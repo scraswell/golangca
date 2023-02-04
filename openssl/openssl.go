@@ -9,6 +9,10 @@ func init() {
 	common.AssertAvailablePRNG()
 }
 
+func GetRootCertificate(v *viper.Viper) string {
+	return getRootCertificate(readConfig(v))
+}
+
 func GetCrlForRootCa(v *viper.Viper) string {
 	return getCrl(readConfig(v), true)
 }
