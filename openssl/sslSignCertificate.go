@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	common "github.com/scraswell/golangca/openssl/common"
+	"github.com/scraswell/golangca/openssl/common"
 )
 
 const signingConfigIndex = 2

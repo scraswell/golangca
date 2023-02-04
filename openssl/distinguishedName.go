@@ -3,7 +3,7 @@ package openssl
 import (
 	"fmt"
 
-	common "github.com/scraswell/golangca/openssl/common"
+	"github.com/scraswell/golangca/openssl/common"
 )
 
 func BuildDistinguishedName(c *Config, isRoot bool) string {

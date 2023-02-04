@@ -46,11 +46,18 @@ func InvokeOpensslCommand(args ...string) (int, string, string) {
 		panic(fmt.Errorf("unable read stderr: %w", err))
 	}
 
-	sslCommand.Wait()
+	awaitCompletion(sslCommand)
 
 	standardOutput := string(slurpOut)
 	standardError := string(slurpErr)
 	exitCode := sslCommand.ProcessState.ExitCode()
 
 	return exitCode, standardOutput, standardError
+}
+
+func awaitCompletion(cmd *exec.Cmd) {
+	err := cmd.Wait()
+	if err != nil {
+		panic(fmt.Errorf("failed to await command completion: %w", err))
+	}
 }

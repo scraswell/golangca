@@ -40,7 +40,7 @@ func (fs *FileSystem) Open(name string) (http.File, error) {
 	}
 	file, ok := fs.files[name]
 	if !ok {
-		files := []os.FileInfo{}
+		var files []os.FileInfo
 		for path, file := range fs.files {
 			if strings.HasPrefix(path, name) {
 				fi := file.fi

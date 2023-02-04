@@ -23,7 +23,7 @@ func getConfig(v *viper.Viper) *Config {
 	return conf
 }
 
-type CertficateAuthority struct {
+type CertificateAuthority struct {
 	Directory string `mapstructure:"dir"`
 	Name      string `mapstructure:"name"`
 	Contact   string `mapstructure:"contact"`
@@ -31,15 +31,15 @@ type CertficateAuthority struct {
 }
 
 type Config struct {
-	DefaultCAKeyLength   int                 `mapstructure:"caKeyLength"`
-	DefaultCertKeyLength int                 `mapstructure:"certKeyLength"`
-	HashAlgorithm        string              `mapstructure:"hashAlgorithm"`
-	Country              string              `mapstructure:"country"`
-	State                string              `mapstructure:"state"`
-	City                 string              `mapstructure:"city"`
-	Org                  string              `mapstructure:"organization"`
-	OrgUnit              string              `mapstructure:"organizationalUnit"`
-	Domain               string              `mapstructure:"domain"`
-	RootCaConfig         CertficateAuthority `mapstructure:"rootAuthority"`
-	IntermediateCaConfig CertficateAuthority `mapstructure:"intermediateAuthority"`
+	DefaultCAKeyLength   int                  `mapstructure:"caKeyLength"`
+	DefaultCertKeyLength int                  `mapstructure:"certKeyLength"`
+	HashAlgorithm        string               `mapstructure:"hashAlgorithm"`
+	Country              string               `mapstructure:"country"`
+	State                string               `mapstructure:"state"`
+	City                 string               `mapstructure:"city"`
+	Org                  string               `mapstructure:"organization"`
+	OrgUnit              string               `mapstructure:"organizationalUnit"`
+	Domain               string               `mapstructure:"domain"`
+	RootCaConfig         CertificateAuthority `mapstructure:"rootAuthority"`
+	IntermediateCaConfig CertificateAuthority `mapstructure:"intermediateAuthority"`
 }

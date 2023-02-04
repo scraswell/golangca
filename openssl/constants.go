@@ -15,7 +15,7 @@ const IntCaCert string = "int_ca.cert.pem"
 const IntCaConfig string = "/resources/int_ca-openssl.conf.j2" // embedded resource
 const IntCaCsr string = "int_ca.csr"
 const IssuedDir string = "issued"
-const OpenSslConfigFileName string = "openssl.conf"
+const SslConfigFileName string = "openssl.conf"
 const PassphraseFile string = "passphrase"
 const PassphraseLengthBytes = 128
 const PfxDir string = "pfx"
@@ -53,7 +53,7 @@ func getCrlNumberPath(caRoot string) string {
 }
 
 func getConfigPath(caRoot string) string {
-	return fmt.Sprintf("%s/%s", caRoot, OpenSslConfigFileName)
+	return fmt.Sprintf("%s/%s", caRoot, SslConfigFileName)
 }
 
 func getPrivateKeyPath(caRoot string) string {

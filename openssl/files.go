@@ -6,8 +6,8 @@ import (
 	"os"
 	"strings"
 
-	assets "github.com/scraswell/golangca/openssl/assets"
-	common "github.com/scraswell/golangca/openssl/common"
+	"github.com/scraswell/golangca/openssl/assets"
+	"github.com/scraswell/golangca/openssl/common"
 )
 
 func generatePassphraseFile(c *Config, isRoot bool) {
@@ -24,8 +24,8 @@ func generatePassphraseFile(c *Config, isRoot bool) {
 	}
 
 	passphraseFile := createFile(passphraseFilePath)
-	passphraseFile.WriteString(passphrase)
-	passphraseFile.Close()
+	writeContentToFile(passphrase, passphraseFile)
+	closeFile(passphraseFile)
 	protectFile(passphraseFilePath)
 }
 
@@ -52,16 +52,16 @@ func getCrl(c *Config, isRoot bool) string {
 }
 
 func generateCrlNumberFile(c *Config, isRoot bool) {
-	var cadir string
+	var caDir string
 	if isRoot {
-		cadir = c.RootCaConfig.Directory
+		caDir = c.RootCaConfig.Directory
 	} else {
-		cadir = c.IntermediateCaConfig.Directory
+		caDir = c.IntermediateCaConfig.Directory
 	}
 
-	CrlNumberFilePath := getCrlNumberPath(cadir)
+	CrlNumberFilePath := getCrlNumberPath(caDir)
 	crlNumberFile := createFileWithContent(CrlNumberFilePath, StartingCrlNumber)
-	crlNumberFile.Close()
+	closeFile(crlNumberFile)
 	protectFile(CrlNumberFilePath)
 }
 
@@ -99,17 +99,17 @@ func writeOutConfig(c *Config, isRoot bool) {
 
 	configFilePath := getConfigPath(directory)
 	configFile := createFileWithContent(configFilePath, data)
-	configFile.Close()
+	closeFile(configFile)
 	protectFile(configFilePath)
 
 	log.Printf("Created CA configuration file: %s", configFilePath)
 }
 
-func intializeSerialNumber(path string) {
+func initializeSerialNumberFile(path string) {
 	serialFilePath := fmt.Sprintf("%s/%s", path, SerialNumberFile)
 
 	serialFile := createFileWithContent(serialFilePath, StartingSerialNumber)
-	serialFile.Close()
+	closeFile(serialFile)
 	protectFile(serialFilePath)
 
 	log.Printf("Created CA serial number file: %s", serialFilePath)
@@ -128,7 +128,7 @@ func createEmptyDatabase(path string) {
 	dbFilePath := fmt.Sprintf("%s/%s", path, DbFileName)
 
 	dbFile := createFile(dbFilePath)
-	dbFile.Close()
+	closeFile(dbFile)
 	protectFile(dbFilePath)
 
 	log.Printf("Created CA database file: %s", dbFilePath)
@@ -159,11 +159,7 @@ func createFile(filePath string) *os.File {
 func createFileWithContent(filePath string, content string) *os.File {
 	file := createFile(filePath)
 
-	_, err := file.WriteString(content)
-	if err != nil {
-		panic(fmt.Errorf("unable to write content to file (%s): %w", filePath, err))
-	}
-
+	writeContentToFile(content, file)
 	return file
 }
 
@@ -172,4 +168,19 @@ func protectFile(filePath string) {
 	if err != nil {
 		panic(fmt.Errorf("error changing the file mode (%s): %w", filePath, err))
 	}
+}
+
+func writeContentToFile(line string, file *os.File) {
+	_, err := file.WriteString(line)
+	if err != nil {
+		panic(fmt.Errorf("failed to write string to file. %w", err))
+	}
+}
+
+func closeFile(file *os.File) {
+	err := file.Close()
+	if err != nil {
+		panic(fmt.Errorf("failed to close file %w", err))
+	}
+
 }

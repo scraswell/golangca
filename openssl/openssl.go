@@ -1,7 +1,7 @@
 package openssl
 
 import (
-	common "github.com/scraswell/golangca/openssl/common"
+	"github.com/scraswell/golangca/openssl/common"
 	"github.com/spf13/viper"
 )
 
@@ -69,7 +69,7 @@ func Initialize(v *viper.Viper) {
 		createDirectories(dir)
 		generatePassphraseFile(c, isRootCa)
 		createEmptyDatabase(dir)
-		intializeSerialNumber(dir)
+		initializeSerialNumberFile(dir)
 		generateCrlNumberFile(c, isRootCa)
 		writeOutConfig(c, isRootCa)
 
@@ -89,8 +89,8 @@ func Initialize(v *viper.Viper) {
 		DaysValid:             c.IntermediateCaConfig.DaysValid,
 		HashAlgorithm:         c.HashAlgorithm,
 		Passphrase:            getPassphraseFilePath(c.RootCaConfig.Directory),
-		CsrInputPath:          (getCsrPath(c.RootCaConfig.Directory) + "/" + IntCaCsr),
-		CertificateOutputPath: (getCertOutputPath(c.RootCaConfig.Directory) + "/" + IntCaCert),
+		CsrInputPath:          getCsrPath(c.RootCaConfig.Directory) + "/" + IntCaCsr,
+		CertificateOutputPath: getCertOutputPath(c.RootCaConfig.Directory) + "/" + IntCaCert,
 	})
 }
 
@@ -106,7 +106,7 @@ func GenerateIntermediateCaCsr(c *Config) {
 		c.HashAlgorithm,
 		getPrivateKeyPath(c.IntermediateCaConfig.Directory),
 		getConfigPath(c.IntermediateCaConfig.Directory),
-		(getCsrPath(c.RootCaConfig.Directory) + "/" + IntCaCsr),
+		getCsrPath(c.RootCaConfig.Directory)+"/"+IntCaCsr,
 		getPassphrase(c, false))
 }
 

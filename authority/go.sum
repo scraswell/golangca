@@ -144,12 +144,6 @@ github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZN
 github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:xMI15A0UPsDsEKsMN9yxemIoYk6Tm2C1GtYGdfGttqA=
 github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFRclV5y23lUDJ4=
 github.com/rogpeppe/go-internal v1.6.1 h1:/FiVV8dS/e+YqF2JvO3yXRFbBLTIuSDkuC7aBOAvL+k=
-github.com/scraswell/golangca/openssl v0.0.0 h1:ekhAswZJ7N+jGDFa60uElTUu/wSkTNPY/lStYu58zyI=
-github.com/scraswell/golangca/openssl v0.0.0/go.mod h1:nSWvGsUKkLzPPMB2MsMK5iDz0kDGeq+xo5J2gnGvCWA=
-github.com/scraswell/golangca/openssl/assets v0.0.0 h1:cz/ToXxR7PiCfXN7H23gTEczBZU0ccHvxoDdb+dpcys=
-github.com/scraswell/golangca/openssl/assets v0.0.0/go.mod h1:2XT9mHn/ahWOYHISjZ7hLeWe2U+Xd2d/z/JQmkJSaKQ=
-github.com/scraswell/golangca/openssl/common v0.0.0 h1:dhGIep40LgheHKTFjx4EKECHWKzuwavkJbX4oNbRG3s=
-github.com/scraswell/golangca/openssl/common v0.0.0/go.mod h1:d6z1Am7iS97f7ZNYFUSaSMz2e23hFd2906epelIVMPg=
 github.com/spf13/afero v1.9.3 h1:41FoI0fD7OR7mGcKE/aOiLkGreyf8ifIOQmJANWogMk=
 github.com/spf13/afero v1.9.3/go.mod h1:iUV7ddyEEZPO5gA3zD4fJt6iStLlL+Lg4m2cihcDf8Y=
 github.com/spf13/cast v1.5.0 h1:rj3WzYc11XZaIZMPKmwP96zkFEnnAmV8s6XbB2aY32w=

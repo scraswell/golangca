@@ -7,7 +7,7 @@ import (
 	"os"
 	"strconv"
 
-	common "github.com/scraswell/golangca/openssl/common"
+	"github.com/scraswell/golangca/openssl/common"
 )
 
 func getDbFilePath(c *Config, fromRootCa bool) string {
@@ -31,7 +31,12 @@ func listCertificates(c *Config, fromRootCa bool) string {
 		panic(fmt.Errorf("unable to open certificate database: %w", err))
 	}
 
-	defer db.Close()
+	defer func(db *os.File) {
+		err := db.Close()
+		if err != nil {
+			panic(fmt.Errorf("failed to close file %w", err))
+		}
+	}(db)
 
 	reader := csv.NewReader(db)
 	reader.Comma = '\t'
