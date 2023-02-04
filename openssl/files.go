@@ -26,7 +26,7 @@ func generatePassphraseFile(c *Config, isRoot bool) {
 	passphraseFile := createFile(passphraseFilePath)
 	writeContentToFile(passphrase, passphraseFile)
 	closeFile(passphraseFile)
-	protectFile(passphraseFilePath)
+	common.ProtectFile(passphraseFilePath)
 }
 
 func getPassphrase(c *Config, isRoot bool) string {
@@ -62,7 +62,7 @@ func generateCrlNumberFile(c *Config, isRoot bool) {
 	CrlNumberFilePath := getCrlNumberPath(caDir)
 	crlNumberFile := createFileWithContent(CrlNumberFilePath, StartingCrlNumber)
 	closeFile(crlNumberFile)
-	protectFile(CrlNumberFilePath)
+	common.ProtectFile(CrlNumberFilePath)
 }
 
 func writeOutConfig(c *Config, isRoot bool) {
@@ -100,7 +100,7 @@ func writeOutConfig(c *Config, isRoot bool) {
 	configFilePath := getConfigPath(directory)
 	configFile := createFileWithContent(configFilePath, data)
 	closeFile(configFile)
-	protectFile(configFilePath)
+	common.ProtectFile(configFilePath)
 
 	log.Printf("Created CA configuration file: %s", configFilePath)
 }
@@ -110,7 +110,7 @@ func initializeSerialNumberFile(path string) {
 
 	serialFile := createFileWithContent(serialFilePath, StartingSerialNumber)
 	closeFile(serialFile)
-	protectFile(serialFilePath)
+	common.ProtectFile(serialFilePath)
 
 	log.Printf("Created CA serial number file: %s", serialFilePath)
 }
@@ -129,7 +129,7 @@ func createEmptyDatabase(path string) {
 
 	dbFile := createFile(dbFilePath)
 	closeFile(dbFile)
-	protectFile(dbFilePath)
+	common.ProtectFile(dbFilePath)
 
 	log.Printf("Created CA database file: %s", dbFilePath)
 }
@@ -161,13 +161,6 @@ func createFileWithContent(filePath string, content string) *os.File {
 
 	writeContentToFile(content, file)
 	return file
-}
-
-func protectFile(filePath string) {
-	err := os.Chmod(filePath, os.FileMode.Perm(0o600))
-	if err != nil {
-		panic(fmt.Errorf("error changing the file mode (%s): %w", filePath, err))
-	}
 }
 
 func writeContentToFile(line string, file *os.File) {

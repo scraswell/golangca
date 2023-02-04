@@ -73,7 +73,7 @@ func Initialize(v *viper.Viper) {
 		generateCrlNumberFile(c, isRootCa)
 		writeOutConfig(c, isRootCa)
 
-		GenerateEncryptedRsaKey(
+		common.GenerateEncryptedRsaKey(
 			getPassphrase(c, isRootCa),
 			getPrivateKeyPath(dir),
 			c.DefaultCAKeyLength)

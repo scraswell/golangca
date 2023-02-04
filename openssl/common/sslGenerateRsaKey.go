@@ -1,9 +1,7 @@
-package openssl
+package common
 
 import (
 	"fmt"
-
-	"github.com/scraswell/golangca/openssl/common"
 )
 
 const genRsaKeyPassphraseIndex = 3
@@ -39,11 +37,11 @@ func getGenEncryptedRsaKeyArgs(passphrase string, keyfilePath string, bitlength 
 	return args
 }
 
-func GenerateEncryptedRsaKey(passphrase string, keyfilePath string, bitlength int) {
-	exitCode, standardOutput, standardError := common.InvokeOpensslCommand(
-		getGenEncryptedRsaKeyArgs(passphrase, keyfilePath, bitlength)...)
+func GenerateEncryptedRsaKey(passphrase string, keyfilePath string, bitLength int) {
+	exitCode, standardOutput, standardError := InvokeOpensslCommand(
+		getGenEncryptedRsaKeyArgs(passphrase, keyfilePath, bitLength)...)
 
-	protectFile(keyfilePath)
+	ProtectFile(keyfilePath)
 
 	if exitCode != 0 {
 		panic(fmt.Sprintf(
