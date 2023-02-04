@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-
 	"github.com/scraswell/golangca/openssl"
 	"github.com/spf13/viper"
 )
@@ -13,7 +12,6 @@ func main() {
 	configure()
 
 	openssl.Initialize(config)
-	openssl.GetRootCertificate(config)
 }
 
 func configure() {
