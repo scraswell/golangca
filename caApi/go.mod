@@ -2,7 +2,10 @@ module github.com/scraswell/golangca/caApi
 
 go 1.19
 
-require github.com/gin-gonic/gin v1.8.2
+require (
+	github.com/gin-contrib/gzip v0.0.6
+	github.com/gin-gonic/gin v1.8.2
+)
 
 require (
 	github.com/gin-contrib/sse v0.1.0 // indirect

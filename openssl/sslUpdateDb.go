@@ -45,7 +45,7 @@ func genUpdateDbArgs(isRootCa bool) []string {
 	return args
 }
 
-func Updatedb(isRootCa bool) {
+func UpdateDb(isRootCa bool) {
 	log.Printf("Updating the certificate database.")
 	exitCode, standardOutput, standardError := common.InvokeOpensslCommand(genUpdateDbArgs(isRootCa)...)
 

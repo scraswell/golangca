@@ -25,3 +25,8 @@ type Certificate struct {
 	FilePath          string `mapstructure:"path"`
 	DistinguishedName string `mapstructure:"dn"`
 }
+
+type EncodedCertificate struct {
+	DistinguishedName string `mapstructure:"dn"`
+	PemEncodedPayload string `mapstructure:"pem"`
+}

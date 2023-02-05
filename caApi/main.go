@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
 	"github.com/scraswell/golangca/authority"
 	"net/http"
@@ -9,10 +10,12 @@ import (
 
 const ListRootCertificates = "/list/root"
 const ListIntermediateCertificates = "/list/int"
-const GetCertificate = "/get"
+const GetRootCaCertificate = "/get/root"
+const GetIntermediateCaCertificate = "/get/int"
 
 func main() {
 	router := gin.Default()
+	router.Use(gzip.Gzip(gzip.DefaultCompression))
 
 	router.GET(ListRootCertificates, func(ctx *gin.Context) {
 		ctx.JSON(

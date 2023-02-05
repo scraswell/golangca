@@ -39,11 +39,11 @@ func GenerateIntermediateCaCrl() {
 }
 
 func UpdateRootCertificateDatabase() {
-	openssl.Updatedb(true)
+	openssl.UpdateDb(true)
 }
 
 func UpdateIntermediateCertificateDatabase(v *viper.Viper) {
-	openssl.Updatedb(false)
+	openssl.UpdateDb(false)
 }
 
 func ListRootCertificates() []*common.Certificate {
