@@ -10,8 +10,24 @@ func init() {
 	openssl.Initialize(false)
 }
 
-func GetRootCertificate() string {
-	return openssl.GetRootCertificate()
+func GetRootCaCertificate() *common.EncodedCertificate {
+	return openssl.GetCertificate(&common.GetCertificate{
+		FromRootCa:   true,
+		RootCert:     true,
+		SerialNumber: -1,
+	})
+}
+
+func GetIntermediateCaCertificate() *common.EncodedCertificate {
+	return openssl.GetCertificate(&common.GetCertificate{
+		FromRootCa:   false,
+		RootCert:     true,
+		SerialNumber: -1,
+	})
+}
+
+func GetCertificate(req *common.GetCertificate) *common.EncodedCertificate {
+	return openssl.GetCertificate(req)
 }
 
 func GetCrlForRootCa() string {

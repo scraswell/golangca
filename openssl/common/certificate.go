@@ -27,6 +27,12 @@ type Certificate struct {
 }
 
 type EncodedCertificate struct {
-	DistinguishedName string `mapstructure:"dn"`
-	PemEncodedPayload string `mapstructure:"pem"`
+	Subject            string `mapstructure:"subject"`
+	EncodedCertificate string `mapstructure:"pem"`
+}
+
+type GetCertificate struct {
+	FromRootCa   bool `mapstructure:"fromRootCa"`
+	RootCert     bool `mapstructure:"rootCert"`
+	SerialNumber int  `mapstructure:"serialNumber"`
 }
