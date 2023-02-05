@@ -1,6 +1,7 @@
 package openssl
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -175,5 +176,26 @@ func closeFile(file *os.File) {
 	if err != nil {
 		panic(fmt.Errorf("failed to close file %w", err))
 	}
+}
 
+func deleteDirectory(directory string) {
+	log.Printf("deleting %s recursively...", directory)
+	err := os.RemoveAll(directory)
+	if err != nil {
+		panic(fmt.Errorf("unable to remove directory %w", err))
+	}
+}
+
+func fileExists(filePath string) bool {
+	stat, err := os.Stat(filePath)
+
+	if err == nil && stat.IsDir() {
+		return false
+	} else if err == nil {
+		return true
+	} else if err != nil && errors.Is(err, os.ErrNotExist) {
+		return false
+	} else {
+		panic("stat call failed")
+	}
 }

@@ -10,7 +10,7 @@ var config = viper.New()
 
 func init() {
 	configure()
-	openssl.Initialize(config)
+	openssl.Initialize(config, false)
 }
 
 func GetConfig() *viper.Viper {

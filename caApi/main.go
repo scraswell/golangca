@@ -21,7 +21,7 @@ func main() {
 	router.GET(ListIntermediateCertificatesRoute, func(ctx *gin.Context) {
 		ctx.String(
 			http.StatusOK,
-			openssl.ShowRootCertificateDatabase(authority.GetConfig()))
+			openssl.ShowIntermediateCertificateDatabase(authority.GetConfig()))
 	})
 
 	router.Run()
