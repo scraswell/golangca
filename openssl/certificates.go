@@ -2,7 +2,6 @@ package openssl
 
 import (
 	"encoding/csv"
-	"encoding/json"
 	"fmt"
 	"os"
 	"strconv"
@@ -14,7 +13,7 @@ func GetRootCertificate() string {
 	return readStringFromFile(getCaCertificatePath(GetConfig().RootCaConfig.Directory))
 }
 
-func ListCertificates(fromRootCa bool) string {
+func ListCertificates(fromRootCa bool) []*common.Certificate {
 	dbFilePath := getDbFilePath(fromRootCa)
 
 	db, err := os.Open(dbFilePath)
@@ -22,13 +21,6 @@ func ListCertificates(fromRootCa bool) string {
 	if err != nil {
 		panic(fmt.Errorf("unable to open certificate database: %w", err))
 	}
-
-	defer func(db *os.File) {
-		err := db.Close()
-		if err != nil {
-			panic(fmt.Errorf("failed to close file %w", err))
-		}
-	}(db)
 
 	reader := csv.NewReader(db)
 	reader.Comma = '\t'
@@ -40,7 +32,7 @@ func ListCertificates(fromRootCa bool) string {
 	}
 
 	var certificate common.Certificate
-	var certificates []common.Certificate
+	var certificates []*common.Certificate
 
 	for _, cert := range certificateData {
 		certificate.Status = cert[common.StatusField]
@@ -49,15 +41,12 @@ func ListCertificates(fromRootCa bool) string {
 		certificate.FilePath = fmt.Sprintf("./%s/%s.pem", IssuedDir, cert[common.SerialField])
 		certificate.DistinguishedName = cert[common.DistinguishedNameField]
 
-		certificates = append(certificates, certificate)
+		certificates = append(certificates, &certificate)
 	}
 
-	certsJson, err := json.Marshal(certificates)
-	if err != nil {
-		panic(fmt.Errorf("unable to marshall certificates: %w", err))
-	}
+	closeFile(db)
 
-	return string(certsJson)
+	return certificates
 }
 
 func getDbFilePath(fromRootCa bool) string {

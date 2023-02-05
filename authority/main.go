@@ -2,6 +2,7 @@ package authority
 
 import (
 	"github.com/scraswell/golangca/openssl"
+	"github.com/scraswell/golangca/openssl/common"
 	"github.com/spf13/viper"
 )
 
@@ -45,10 +46,10 @@ func UpdateIntermediateCertificateDatabase(v *viper.Viper) {
 	openssl.Updatedb(false)
 }
 
-func ListRootCertificates() string {
+func ListRootCertificates() []*common.Certificate {
 	return openssl.ListCertificates(true)
 }
 
-func ListIntermediateCertificates() string {
+func ListIntermediateCertificates() []*common.Certificate {
 	return openssl.ListCertificates(false)
 }

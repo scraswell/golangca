@@ -19,9 +19,9 @@ const CertificateRevoked = "R"
 const CertificateExpired = "E"
 
 type Certificate struct {
-	Status            string
-	Date              string
-	Serial            int
-	FilePath          string
-	DistinguishedName string
+	Status            string `mapstructure:"status"`
+	Date              string `mapstructure:"expiry"`
+	Serial            int    `mapstructure:"serial"`
+	FilePath          string `mapstructure:"path"`
+	DistinguishedName string `mapstructure:"dn"`
 }
