@@ -3,6 +3,7 @@ package common
 import (
 	"fmt"
 	"io"
+	"log"
 	"os/exec"
 )
 
@@ -58,6 +59,6 @@ func InvokeOpensslCommand(args ...string) (int, string, string) {
 func awaitCompletion(cmd *exec.Cmd) {
 	err := cmd.Wait()
 	if err != nil {
-		panic(fmt.Errorf("failed to await command completion: %w", err))
+		log.Printf("openssl command failed.")
 	}
 }

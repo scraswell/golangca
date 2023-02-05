@@ -1,6 +1,7 @@
 package openssl
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"strings"
@@ -8,6 +9,7 @@ import (
 	"github.com/scraswell/golangca/openssl/common"
 )
 
+const CertNotFoundError = "CertNotFoundError"
 const getCertFilePathIndex = 2
 
 var getCertArgs = [...]string{
@@ -17,7 +19,7 @@ var getCertArgs = [...]string{
 	"-subject",
 }
 
-func genGetCertArgs(isRoot bool, getRootCaCertificate bool, serialNumber int) []string {
+func genGetCertArgs(isRoot bool, getRootCaCertificate bool, serialNumber int) ([]string, bool) {
 	var c = GetConfig()
 	var args []string
 	var caDir string
@@ -44,13 +46,18 @@ func genGetCertArgs(isRoot bool, getRootCaCertificate bool, serialNumber int) []
 		args = append(args, arg)
 	}
 
-	return args
+	return args, fileExists(certPath)
 }
 
-func GetCertificate(cert *common.GetCertificate) *common.EncodedCertificate {
+func GetCertificate(cert *common.GetCertificate) (*common.EncodedCertificate, error) {
 	log.Print("Getting certificate...")
 
-	exitCode, standardOutput, standardError := common.InvokeOpensslCommand(genGetCertArgs(cert.FromRootCa, cert.RootCert, cert.SerialNumber)...)
+	args, exists := genGetCertArgs(cert.FromRootCa, cert.RootCert, cert.SerialNumber)
+	if !exists {
+		return nil, errors.New(CertNotFoundError)
+	}
+
+	exitCode, standardOutput, standardError := common.InvokeOpensslCommand(args...)
 
 	if exitCode != 0 {
 		panic(fmt.Sprintf(
@@ -74,5 +81,9 @@ func GetCertificate(cert *common.GetCertificate) *common.EncodedCertificate {
 
 	result.EncodedCertificate = strings.Join(pemEncodedCertLines, "\n")
 
-	return result
+	return result, nil
+}
+
+func getCertificateFilePath(caDir string, serialNumber int) string {
+	return fmt.Sprintf("%s/%d.pem", getIssuedCertsDir(caDir), serialNumber)
 }
