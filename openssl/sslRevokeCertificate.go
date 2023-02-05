@@ -21,24 +21,25 @@ var revokeCertificateArgs = [...]string{
 	"file:%s",
 }
 
-func genRevokeCertificateArgs(c *Config, isRoot bool, certificateSerialNumber string) []string {
+func genRevokeCertificateArgs(isRoot bool, certificateSerialNumber string) []string {
 	var args []string
-	var cadir string
+	var caDir string
+	var c = GetConfig()
 
 	if isRoot {
-		cadir = c.RootCaConfig.Directory
+		caDir = c.RootCaConfig.Directory
 	} else {
-		cadir = c.IntermediateCaConfig.Directory
+		caDir = c.IntermediateCaConfig.Directory
 	}
 
 	for i, arg := range revokeCertificateArgs {
 		switch i {
 		case revokeCertificateConfigIndex:
-			arg = fmt.Sprintf(arg, getConfigPath(cadir))
+			arg = fmt.Sprintf(arg, getConfigPath(caDir))
 		case revokeCertificateIndex:
-			arg = fmt.Sprintf(arg, fmt.Sprintf("%s/%s.pem", getIssuedCertsDir(cadir), certificateSerialNumber))
+			arg = fmt.Sprintf(arg, fmt.Sprintf("%s/%s.pem", getIssuedCertsDir(caDir), certificateSerialNumber))
 		case revokeCertificatePassphraseIndex:
-			arg = fmt.Sprintf(arg, getPassphraseFilePath(cadir))
+			arg = fmt.Sprintf(arg, getPassphraseFilePath(caDir))
 		}
 
 		args = append(args, arg)
@@ -47,9 +48,9 @@ func genRevokeCertificateArgs(c *Config, isRoot bool, certificateSerialNumber st
 	return args
 }
 
-func revokeCertificate(c *Config, isRoot bool, certificateSerialNumber string) {
+func RevokeCertificate(isRoot bool, certificateSerialNumber string) {
 	log.Printf("Revoking certificate with serial number %s...", certificateSerialNumber)
-	exitCode, standardOutput, standardError := common.InvokeOpensslCommand(genRevokeCertificateArgs(c, isRoot, certificateSerialNumber)...)
+	exitCode, standardOutput, standardError := common.InvokeOpensslCommand(genRevokeCertificateArgs(isRoot, certificateSerialNumber)...)
 
 	if exitCode != 0 {
 		panic(fmt.Sprintf(

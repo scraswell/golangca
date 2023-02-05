@@ -22,24 +22,25 @@ var crlArgs = [...]string{
 	"file:%s",
 }
 
-func genCrlArgs(c *Config, isRoot bool) []string {
+func genCrlArgs(isRoot bool) []string {
+	var c = GetConfig()
 	var args []string
-	var cadir string
+	var caDir string
 
 	if isRoot {
-		cadir = c.RootCaConfig.Directory
+		caDir = c.RootCaConfig.Directory
 	} else {
-		cadir = c.IntermediateCaConfig.Directory
+		caDir = c.IntermediateCaConfig.Directory
 	}
 
 	for i, arg := range crlArgs {
 		switch i {
 		case genCrlConfigIndex:
-			arg = fmt.Sprintf(arg, getConfigPath(cadir))
+			arg = fmt.Sprintf(arg, getConfigPath(caDir))
 		case genCrlOutputPathIndex:
-			arg = fmt.Sprintf(arg, getCrlPath(cadir))
+			arg = fmt.Sprintf(arg, getCrlPath(caDir))
 		case genCrlPassphraseIndex:
-			arg = fmt.Sprintf(arg, getPassphraseFilePath(cadir))
+			arg = fmt.Sprintf(arg, getPassphraseFilePath(caDir))
 		}
 
 		args = append(args, arg)
@@ -48,9 +49,9 @@ func genCrlArgs(c *Config, isRoot bool) []string {
 	return args
 }
 
-func generateCrl(c *Config, isRoot bool) {
+func GenerateCrl(isRoot bool) {
 	log.Print("Generating CRL...")
-	exitCode, standardOutput, standardError := common.InvokeOpensslCommand(genCrlArgs(c, isRoot)...)
+	exitCode, standardOutput, standardError := common.InvokeOpensslCommand(genCrlArgs(isRoot)...)
 
 	if exitCode != 0 {
 		panic(fmt.Sprintf(

@@ -19,12 +19,14 @@ var updateDbArgs = [...]string{
 	"-updatedb",
 }
 
-func genUpdateDbArgs(c *Config, isRootCa bool) []string {
-	var cadir string
+func genUpdateDbArgs(isRootCa bool) []string {
+	var caDir string
+	var c = GetConfig()
+
 	if isRootCa {
-		cadir = c.RootCaConfig.Directory
+		caDir = c.RootCaConfig.Directory
 	} else {
-		cadir = c.IntermediateCaConfig.Directory
+		caDir = c.IntermediateCaConfig.Directory
 	}
 
 	var args []string
@@ -32,9 +34,9 @@ func genUpdateDbArgs(c *Config, isRootCa bool) []string {
 	for i, arg := range updateDbArgs {
 		switch i {
 		case updateDbConfigIndex:
-			arg = fmt.Sprintf(arg, getConfigPath(cadir))
+			arg = fmt.Sprintf(arg, getConfigPath(caDir))
 		case updateDbPassphraseIndex:
-			arg = fmt.Sprintf(arg, getPassphraseFilePath(cadir))
+			arg = fmt.Sprintf(arg, getPassphraseFilePath(caDir))
 		}
 
 		args = append(args, arg)
@@ -43,9 +45,9 @@ func genUpdateDbArgs(c *Config, isRootCa bool) []string {
 	return args
 }
 
-func updatedb(c *Config, isRootCa bool) {
+func Updatedb(isRootCa bool) {
 	log.Printf("Updating the certificate database.")
-	exitCode, standardOutput, standardError := common.InvokeOpensslCommand(genUpdateDbArgs(c, isRootCa)...)
+	exitCode, standardOutput, standardError := common.InvokeOpensslCommand(genUpdateDbArgs(isRootCa)...)
 
 	if exitCode != 0 {
 		panic(fmt.Sprintf(

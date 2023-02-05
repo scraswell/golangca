@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/scraswell/golangca/authority"
-	"github.com/scraswell/golangca/openssl"
 	"net/http"
 )
 
@@ -15,13 +14,13 @@ func main() {
 	router.GET(ListRootCertificatesRoute, func(ctx *gin.Context) {
 		ctx.String(
 			http.StatusOK,
-			openssl.ShowRootCertificateDatabase(authority.GetConfig()))
+			authority.ListRootCertificates())
 	})
 
 	router.GET(ListIntermediateCertificatesRoute, func(ctx *gin.Context) {
 		ctx.String(
 			http.StatusOK,
-			openssl.ShowIntermediateCertificateDatabase(authority.GetConfig()))
+			authority.ListIntermediateCertificates())
 	})
 
 	router.Run()

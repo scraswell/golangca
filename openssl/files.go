@@ -11,7 +11,8 @@ import (
 	"github.com/scraswell/golangca/openssl/common"
 )
 
-func generatePassphraseFile(c *Config, isRoot bool) {
+func generatePassphraseFile(isRoot bool) {
+	var c = GetConfig()
 	var passphraseFilePath string
 	if isRoot {
 		passphraseFilePath = getPassphraseFilePath(c.RootCaConfig.Directory)
@@ -30,7 +31,8 @@ func generatePassphraseFile(c *Config, isRoot bool) {
 	common.ProtectFile(passphraseFilePath)
 }
 
-func getPassphrase(c *Config, isRoot bool) string {
+func getPassphrase(isRoot bool) string {
+	var c = GetConfig()
 	var passphraseFilePath string
 	if isRoot {
 		passphraseFilePath = getPassphraseFilePath(c.RootCaConfig.Directory)
@@ -41,7 +43,8 @@ func getPassphrase(c *Config, isRoot bool) string {
 	return readStringFromFile(passphraseFilePath)
 }
 
-func getCrl(c *Config, isRoot bool) string {
+func GetCrl(isRoot bool) string {
+	var c = GetConfig()
 	var crlFilePath string
 	if isRoot {
 		crlFilePath = getCrlPath(c.RootCaConfig.Directory)
@@ -52,7 +55,8 @@ func getCrl(c *Config, isRoot bool) string {
 	return readStringFromFile(crlFilePath)
 }
 
-func generateCrlNumberFile(c *Config, isRoot bool) {
+func generateCrlNumberFile(isRoot bool) {
+	var c = GetConfig()
 	var caDir string
 	if isRoot {
 		caDir = c.RootCaConfig.Directory
@@ -66,7 +70,8 @@ func generateCrlNumberFile(c *Config, isRoot bool) {
 	common.ProtectFile(CrlNumberFilePath)
 }
 
-func writeOutConfig(c *Config, isRoot bool) {
+func writeOutConfig(isRoot bool) {
+	var c = GetConfig()
 	var configFileTemplate string
 	var directory string
 

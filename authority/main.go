@@ -1,33 +1,54 @@
 package authority
 
 import (
-	"fmt"
 	"github.com/scraswell/golangca/openssl"
 	"github.com/spf13/viper"
 )
 
-var config = viper.New()
-
 func init() {
-	configure()
-	openssl.Initialize(config, false)
+	openssl.Initialize(false)
 }
 
-func GetConfig() *viper.Viper {
-	return config
+func GetRootCertificate() string {
+	return openssl.GetRootCertificate()
 }
 
-func configure() {
-	config.SetConfigName("authority")
-	config.SetConfigType("yaml")
-	config.AddConfigPath(".")
-	config.AddConfigPath("..")
-	config.AddConfigPath("./config")
-	config.AddConfigPath("../config")
-	config.AutomaticEnv()
+func GetCrlForRootCa() string {
+	return openssl.GetCrl(true)
+}
 
-	err := config.ReadInConfig()
-	if err != nil {
-		panic(fmt.Errorf("fatal error while reading config: %w", err))
-	}
+func GetCrlForIntermediateCa() string {
+	return openssl.GetCrl(false)
+}
+
+func RevokeRootCaCertificate(certificateSerialNumber string) {
+	openssl.RevokeCertificate(true, certificateSerialNumber)
+}
+
+func RevokeIntermediateCaCertificate(certificateSerialNumber string) {
+	openssl.RevokeCertificate(false, certificateSerialNumber)
+}
+
+func GenerateRootCaCrl() {
+	openssl.GenerateCrl(true)
+}
+
+func GenerateIntermediateCaCrl() {
+	openssl.GenerateCrl(false)
+}
+
+func UpdateRootCertificateDatabase() {
+	openssl.Updatedb(true)
+}
+
+func UpdateIntermediateCertificateDatabase(v *viper.Viper) {
+	openssl.Updatedb(false)
+}
+
+func ListRootCertificates() string {
+	return openssl.ListCertificates(true)
+}
+
+func ListIntermediateCertificates() string {
+	return openssl.ListCertificates(false)
 }

@@ -7,13 +7,16 @@ import (
 )
 
 var (
+	v    *viper.Viper
 	conf *Config
 )
 
-func getConfig(v *viper.Viper) *Config {
+func GetConfig() *Config {
 	if conf == nil {
 		conf = &Config{}
+		v := viper.New()
 
+		configure(v)
 		err := v.Unmarshal(conf)
 		if err != nil {
 			panic(fmt.Errorf("unable to decode config.  %w", err))
@@ -21,6 +24,20 @@ func getConfig(v *viper.Viper) *Config {
 	}
 
 	return conf
+}
+
+func configure(v *viper.Viper) {
+	v.SetConfigName("authority")
+	v.SetConfigType("yaml")
+	v.AddConfigPath(".")
+	v.AddConfigPath("..")
+	v.AddConfigPath("./config")
+	v.AddConfigPath("../config")
+
+	err := v.ReadInConfig()
+	if err != nil {
+		panic(fmt.Errorf("fatal error while reading config: %w", err))
+	}
 }
 
 type CertificateAuthority struct {

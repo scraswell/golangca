@@ -36,7 +36,8 @@ var AuthorityDirs = [...]string{
 	IssuedDir,
 }
 
-func getCaDir(c *Config, isRoot bool) string {
+func getCaDir(isRoot bool) string {
+	var c = GetConfig()
 	if isRoot {
 		return c.RootCaConfig.Directory
 	} else {

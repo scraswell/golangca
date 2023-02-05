@@ -35,8 +35,9 @@ var rootCertArgs = [...]string{
 	"file:%s",
 }
 
-func genRootCaCertificateArgs(c *Config) []string {
+func genRootCaCertificateArgs() []string {
 	var args []string
+	var c = GetConfig()
 
 	for i, arg := range rootCertArgs {
 		switch i {
@@ -49,7 +50,7 @@ func genRootCaCertificateArgs(c *Config) []string {
 		case genRootCaValidityHashAlg:
 			arg = fmt.Sprintf(arg, c.HashAlgorithm)
 		case genRootCaDnIndex:
-			arg = BuildDistinguishedName(c, true)
+			arg = BuildDistinguishedName(true)
 		case genRootCaOutputFileIndex:
 			arg = fmt.Sprintf(arg, getCaCertificatePath(c.RootCaConfig.Directory))
 		case genRootCaPassphraseIndex:
@@ -62,8 +63,8 @@ func genRootCaCertificateArgs(c *Config) []string {
 	return args
 }
 
-func GenerateRootCACertificate(c *Config) {
-	exitCode, standardOutput, standardError := common.InvokeOpensslCommand(genRootCaCertificateArgs(c)...)
+func GenerateRootCACertificate() {
+	exitCode, standardOutput, standardError := common.InvokeOpensslCommand(genRootCaCertificateArgs()...)
 
 	if exitCode != 0 {
 		panic(fmt.Sprintf(

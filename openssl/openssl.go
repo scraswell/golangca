@@ -3,7 +3,6 @@ package openssl
 import (
 	"fmt"
 	"github.com/scraswell/golangca/openssl/common"
-	"github.com/spf13/viper"
 	"io"
 	"log"
 	"os"
@@ -13,59 +12,15 @@ func init() {
 	common.AssertAvailablePRNG()
 }
 
-func GetRootCertificate(v *viper.Viper) string {
-	return getRootCertificate(readConfig(v))
-}
-
-func GetCrlForRootCa(v *viper.Viper) string {
-	return getCrl(readConfig(v), true)
-}
-
-func GetCrlForIntermediateCa(v *viper.Viper) string {
-	return getCrl(readConfig(v), false)
-}
-
-func RevokeRootCaCertificate(v *viper.Viper, certificateSerialNumber string) {
-	revokeCertificate(readConfig(v), true, certificateSerialNumber)
-}
-
-func RevokeIntermediateCaCertificate(v *viper.Viper, certificateSerialNumber string) {
-	revokeCertificate(readConfig(v), false, certificateSerialNumber)
-}
-
-func GenerateRootCaCrl(v *viper.Viper) {
-	generateCrl(readConfig(v), true)
-}
-
-func GenerateIntermediateCaCrl(v *viper.Viper) {
-	generateCrl(readConfig(v), false)
-}
-
-func UpdateRootCertificateDatabase(v *viper.Viper) {
-	updatedb(readConfig(v), true)
-}
-
-func UpdateIntermediateCertificateDatabase(v *viper.Viper) {
-	updatedb(readConfig(v), false)
-}
-
-func ShowRootCertificateDatabase(v *viper.Viper) string {
-	return listCertificates(readConfig(v), true)
-}
-
-func ShowIntermediateCertificateDatabase(v *viper.Viper) string {
-	return listCertificates(readConfig(v), false)
-}
-
-func Initialize(v *viper.Viper, forceNew bool) {
-	c := readConfig(v)
-
-	if !isInitialized(c) || forceNew {
-		initialize(c)
+func Initialize(forceNew bool) {
+	if !isInitialized() || forceNew {
+		initialize()
 	}
 }
 
-func isInitialized(c *Config) bool {
+func isInitialized() bool {
+	var c = GetConfig()
+
 	var caDir = [...]string{
 		c.RootCaConfig.Directory,
 		c.IntermediateCaConfig.Directory,
@@ -81,7 +36,7 @@ func isInitialized(c *Config) bool {
 		}
 
 		if fileExists(getCaCertificatePath(dir)) && fileExists(getPrivateKeyPath(dir)) && fileExists(getPassphraseFilePath(dir)) {
-			TestKeyPassphrase(c, isRootCa)
+			TestKeyPassphrase(isRootCa)
 		} else {
 			log.Print("CA not previously initialized; initializing as new.")
 			return false
@@ -92,7 +47,9 @@ func isInitialized(c *Config) bool {
 	return true
 }
 
-func initialize(c *Config) {
+func initialize() {
+	var c = GetConfig()
+
 	var caDir = [...]string{
 		c.RootCaConfig.Directory,
 		c.IntermediateCaConfig.Directory,
@@ -109,21 +66,21 @@ func initialize(c *Config) {
 
 		deleteDirectory(dir)
 		createDirectories(dir)
-		generatePassphraseFile(c, isRootCa)
+		generatePassphraseFile(isRootCa)
 		createEmptyDatabase(dir)
 		initializeSerialNumberFile(dir)
-		generateCrlNumberFile(c, isRootCa)
-		writeOutConfig(c, isRootCa)
+		generateCrlNumberFile(isRootCa)
+		writeOutConfig(isRootCa)
 
 		common.GenerateEncryptedRsaKey(
-			getPassphrase(c, isRootCa),
+			getPassphrase(isRootCa),
 			getPrivateKeyPath(dir),
 			c.DefaultCAKeyLength)
 
-		TestKeyPassphrase(c, isRootCa)
+		TestKeyPassphrase(isRootCa)
 	}
 
-	GenerateRootCACertificate(c)
+	GenerateRootCACertificate()
 	GenerateIntermediateCaCsr(c)
 
 	output := getCertOutputPath(c.RootCaConfig.Directory) + "/" + IntCaCert
@@ -154,10 +111,20 @@ func CopySignedIntermediateCaCertificate(config CertificateAuthority, output str
 	if err != nil {
 		panic(fmt.Errorf("failed to open %s", output))
 	}
-	defer source.Close()
+	defer func(source *os.File) {
+		err := source.Close()
+		if err != nil {
+			panic(fmt.Errorf("failed to close source file %w", err))
+		}
+	}(source)
 
 	destination := createFile(getCaCertificatePath(config.Directory))
-	defer destination.Close()
+	defer func(destination *os.File) {
+		err := destination.Close()
+		if err != nil {
+			panic(fmt.Errorf("failed to close destination file %w", err))
+		}
+	}(destination)
 
 	_, err = io.Copy(destination, source)
 	if err != nil {
@@ -178,14 +145,5 @@ func GenerateIntermediateCaCsr(c *Config) {
 		getPrivateKeyPath(c.IntermediateCaConfig.Directory),
 		getConfigPath(c.IntermediateCaConfig.Directory),
 		getCsrPath(c.RootCaConfig.Directory)+"/"+IntCaCsr,
-		getPassphrase(c, false))
-}
-
-func readConfig(v *viper.Viper) *Config {
-	c := getConfig(v)
-	if c == nil {
-		panic("Config was nil.")
-	}
-
-	return c
+		getPassphrase(false))
 }

@@ -18,16 +18,16 @@ var testPassphraseArgs = [...]string{
 	"file:%s",
 }
 
-func genTestPassphraseArgs(c *Config, isRoot bool) []string {
+func genTestPassphraseArgs(isRoot bool) []string {
 	var args []string
-	cadir := getCaDir(c, isRoot)
+	caDir := getCaDir(isRoot)
 
 	for i, arg := range testPassphraseArgs {
 		switch i {
 		case testPassphraseKeyFileIndex:
-			arg = fmt.Sprintf(arg, getPrivateKeyPath(cadir))
+			arg = fmt.Sprintf(arg, getPrivateKeyPath(caDir))
 		case testPassphraseFileIndex:
-			arg = fmt.Sprintf(arg, getPassphraseFilePath(cadir))
+			arg = fmt.Sprintf(arg, getPassphraseFilePath(caDir))
 		}
 
 		args = append(args, arg)
@@ -36,8 +36,8 @@ func genTestPassphraseArgs(c *Config, isRoot bool) []string {
 	return args
 }
 
-func TestKeyPassphrase(c *Config, isRoot bool) {
-	exitCode, standardOutput, standardError := common.InvokeOpensslCommand(genTestPassphraseArgs(c, isRoot)...)
+func TestKeyPassphrase(isRoot bool) {
+	exitCode, standardOutput, standardError := common.InvokeOpensslCommand(genTestPassphraseArgs(isRoot)...)
 
 	if exitCode != 0 {
 		panic(fmt.Sprintf(

@@ -10,24 +10,12 @@ import (
 	"github.com/scraswell/golangca/openssl/common"
 )
 
-func getDbFilePath(c *Config, fromRootCa bool) string {
-	var dir string
-
-	if fromRootCa {
-		dir = c.RootCaConfig.Directory
-	} else {
-		dir = c.IntermediateCaConfig.Directory
-	}
-
-	return fmt.Sprintf("%s/%s", dir, DbFileName)
+func GetRootCertificate() string {
+	return readStringFromFile(getCaCertificatePath(GetConfig().RootCaConfig.Directory))
 }
 
-func getRootCertificate(c *Config) string {
-	return readStringFromFile(getCaCertificatePath(c.RootCaConfig.Directory))
-}
-
-func listCertificates(c *Config, fromRootCa bool) string {
-	dbFilePath := getDbFilePath(c, fromRootCa)
+func ListCertificates(fromRootCa bool) string {
+	dbFilePath := getDbFilePath(fromRootCa)
 
 	db, err := os.Open(dbFilePath)
 
@@ -70,4 +58,16 @@ func listCertificates(c *Config, fromRootCa bool) string {
 	}
 
 	return string(certsJson)
+}
+
+func getDbFilePath(fromRootCa bool) string {
+	var dir string
+
+	if fromRootCa {
+		dir = GetConfig().RootCaConfig.Directory
+	} else {
+		dir = GetConfig().IntermediateCaConfig.Directory
+	}
+
+	return fmt.Sprintf("%s/%s", dir, DbFileName)
 }

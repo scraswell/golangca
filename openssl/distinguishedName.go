@@ -6,9 +6,10 @@ import (
 	"github.com/scraswell/golangca/openssl/common"
 )
 
-func BuildDistinguishedName(c *Config, isRoot bool) string {
+func BuildDistinguishedName(isRoot bool) string {
 	var cn string
 	var contact string
+	var c = GetConfig()
 
 	if isRoot {
 		cn = c.RootCaConfig.Name
