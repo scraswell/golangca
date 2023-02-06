@@ -143,7 +143,6 @@ func GenerateIntermediateCaCsr(c *Config) {
 		c.IntermediateCaConfig.Contact,
 		c.HashAlgorithm,
 		getPrivateKeyPath(c.IntermediateCaConfig.Directory),
-		getConfigPath(c.IntermediateCaConfig.Directory),
 		getCsrPath(c.RootCaConfig.Directory)+"/"+IntCaCsr,
 		getPassphrase(false))
 }

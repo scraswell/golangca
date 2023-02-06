@@ -1,0 +1,4 @@
+github.com/scraswell/golangca/openssl/assets v0.0.0 h1:cz/ToXxR7PiCfXN7H23gTEczBZU0ccHvxoDdb+dpcys=
+github.com/scraswell/golangca/openssl/assets v0.0.0/go.mod h1:2XT9mHn/ahWOYHISjZ7hLeWe2U+Xd2d/z/JQmkJSaKQ=
+github.com/scraswell/golangca/openssl/common v0.0.0 h1:dhGIep40LgheHKTFjx4EKECHWKzuwavkJbX4oNbRG3s=
+github.com/scraswell/golangca/openssl/common v0.0.0/go.mod h1:d6z1Am7iS97f7ZNYFUSaSMz2e23hFd2906epelIVMPg=
